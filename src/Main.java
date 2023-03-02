@@ -4,31 +4,29 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        try {
+        /*try {
             getCustomers().forEach(System.out::println);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+        Customer.createCustomerTable();
+        Cars.createCarsTable();
+        Rentals.createRentalsTable();
     }
 
     public static Connection getConnection() {
-
-        String dbURL = "jdbc:mysql://localhost:3306/car_rental";
-        String username = "root";
-        String password = "secret";
         Connection connection = null;
 
         try {
-            connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(Connection_DB.DB_URL, Connection_DB.USER, Connection_DB.PASS);
         } catch (SQLException ex) {
             System.out.println("Connection failed: " + ex.getMessage());
         }
-
         return connection;
     }
 
 
-    public static List<Customer> getCustomers() throws SQLException {
+/*    public static List<Customer> getCustomers() throws SQLException {
 
         List<Customer> customers = new LinkedList<>();
 
@@ -36,7 +34,7 @@ public class Main {
         // CREATING A STATEMENT
         Statement statement = connection.createStatement();
 
-        // CREATIING A QUERY
+        // CREATING A QUERY
         String query = "SELECT * FROM Customers";
 
         // EXECUTING THE QUERY
@@ -54,5 +52,5 @@ public class Main {
 
         }
         return customers;
-    }
+    }*/
 }
