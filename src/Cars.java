@@ -10,7 +10,7 @@ public class Cars {
         Statement statement = null;
         try {
             // Open a connection
-            System.out.println("Connecting to database...");
+            System.out.println("Connecting to database: " + Connection_DB.DB_URL);
             connection = DriverManager.getConnection(Connection_DB.DB_URL, Connection_DB.USER, Connection_DB.PASS);
 
             // Execute a query to create a table
@@ -26,7 +26,7 @@ public class Cars {
                     "PRIMARY KEY (id))";
 
             statement.executeUpdate(sql);
-            System.out.println("Table created successfully...");
+            System.out.println("Table Cars created successfully");
         } catch (SQLException se) {
             se.printStackTrace();
         } finally {
