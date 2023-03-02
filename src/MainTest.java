@@ -24,22 +24,24 @@ public class MainTest {
             statement.executeUpdate(sql);
             System.out.println("Table created successfully...");
         } catch (SQLException se) {
-            // Handle errors for JDBC
             se.printStackTrace();
         } finally {
-            // Finally block to close resources
-            try {
-                if (statement != null)
-                    connection.close();
-            } catch (SQLException se) {
-            } // do nothing
-            try {
-                if (connection != null)
-                    connection.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            } // end finally try
-        } // end try
+            closeConnections(connection, statement);
+        }
         System.out.println("Goodbye!");
-    } // end main
-} // end CreateTableExample
+    }
+
+    private static void closeConnections(Connection connection, Statement statement) {
+        try {
+            if (statement != null)
+                connection.close();
+        } catch (SQLException se) {
+        }
+        try {
+            if (connection != null)
+                connection.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+}
