@@ -33,6 +33,6 @@ public class Rentals {
         } finally {
             Connection_DB.closeConnections(connection, statement);
         }
-        System.out.println("Goodbye!");
+        System.out.println("-".repeat(50));
     }
 }
