@@ -3,7 +3,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Connection_DB {
-    public static final String DB_URL = "jdbc:mysql://localhost:3306/CarRentals";
+    public static final String DB_URL = "jdbc:mysql://localhost:3306/CarRentals"; //TODO don't forget we neet to change this back and forth xD
     public static final String USER = "root";
     public static final String PASS = "secret";
 
