@@ -27,22 +27,8 @@ public class Customer {
         } catch (SQLException se) {
             se.printStackTrace();
         } finally {
-            closeConnections(connection, statement);
+            Connection_DB.closeConnections(connection, statement);
         }
         System.out.println("Goodbye!");
-    }
-
-    private static void closeConnections(Connection connection, Statement statement) {
-        try {
-            if (statement != null)
-                connection.close();
-        } catch (SQLException se) {
-        }
-        try {
-            if (connection != null)
-                connection.close();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
     }
 }

@@ -8,6 +8,8 @@ public class Main {
         Cars.createCarsTable();
         Rentals.createRentalsTable();
 
+        CustomerRepository.createCustomer("boda", "teste1234@gmail.com");
+
 
     }
 }
