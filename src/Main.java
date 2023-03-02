@@ -9,6 +9,8 @@ public class Main {
         Rentals.createRentalsTable();
 
         CustomerRepository.createCustomer("boda", "teste1234@gmail.com");
+       // CustomerRepository.updateCustomer(1, "teste", "null");
+        CustomerRepository.getCustomer(1);
 
 
     }
