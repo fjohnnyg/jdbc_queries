@@ -1,8 +1,38 @@
 import java.sql.*;
+import java.util.LinkedList;
 import java.util.List;
 public class CustomerRepository {
-    static Connection connection = null;
-    static Statement statement = null;
+    public static Connection connection = null;
+    public static Statement statement = null;
+    public static ResultSet resultSet = null;
+    public static List<Customer> list = new LinkedList<>();
+
+    public static void createCustomerTable() {
+        connection = null;
+        statement = null;
+        try {
+            // Open a connection
+            System.out.println("Connecting to database: " + Connection_DB.DB_URL);
+            connection = DriverManager.getConnection(Connection_DB.DB_URL, Connection_DB.USER, Connection_DB.PASS);
+
+            // Execute a query to create a table
+            System.out.println("Creating table in given database...");
+            statement = connection.createStatement();
+            String sql = "CREATE TABLE Customers " +
+                    "(id INT NOT NULL AUTO_INCREMENT, " +
+                    "name VARCHAR(255) NOT NULL, " +
+                    "email VARCHAR(255) UNIQUE NOT NULL," +
+                    "PRIMARY KEY (id))";
+
+            statement.executeUpdate(sql);
+            System.out.println("Table Customers created successfully...");
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } finally {
+            Connection_DB.closeConnections(connection, statement, resultSet);
+        }
+        System.out.println("-".repeat(50));
+    }
 
     static void createCustomer(String name, String email) {
         try {
@@ -21,7 +51,7 @@ public class CustomerRepository {
         } catch (SQLException se) {
             se.printStackTrace();
         } finally {
-            Connection_DB.closeConnections(connection, statement);
+            Connection_DB.closeConnections(connection, statement, resultSet);
         }
         System.out.println("-".repeat(50));
     }
@@ -36,7 +66,7 @@ public class CustomerRepository {
             String sql = "SELECT id, name, email FROM Customers WHERE id = ?";
             PreparedStatement tempStatement = connection.prepareStatement(sql);
             tempStatement.setInt(1, id);
-            ResultSet resultSet = tempStatement.executeQuery();
+            resultSet = tempStatement.executeQuery();
 
             while (resultSet.next()) {
                 int customerId = resultSet.getInt("id");
@@ -48,7 +78,7 @@ public class CustomerRepository {
         } catch (SQLException se) {
             se.printStackTrace();
         } finally {
-            Connection_DB.closeConnections(connection, statement);
+            Connection_DB.closeConnections(connection, statement, resultSet);
         }
         System.out.println("-".repeat(50));
     }
@@ -120,13 +150,30 @@ public class CustomerRepository {
         } catch (SQLException se) {
             se.printStackTrace();
         } finally {
-            Connection_DB.closeConnections(connection, statement);
+            Connection_DB.closeConnections(connection, statement, resultSet);
         }
         System.out.println("-".repeat(50));
     }
 
-    void   deleteCustomer(int id) {
+    public static void deleteCustomer(int id) {
         // DELETE FROM Customers WHERE id = ?
+        try {
+            System.out.println("Connecting to database car_rental_db: " + Connection_DB.DB_URL);
+            connection = DriverManager.getConnection(Connection_DB.DB_URL, Connection_DB.USER, Connection_DB.PASS);
+
+            statement = connection.createStatement();
+            String sql = "DELETE FROM Customers WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+
+            System.out.println("Customer " + id + " deleted successfully");
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } finally {
+            Connection_DB.closeConnections(connection, statement);
+        }
+        System.out.println("-".repeat(50));
     }
 
     public static void getCustomers() {
@@ -145,8 +192,11 @@ public class CustomerRepository {
                 int customerId = resultSet.getInt("id");
                 String customerName = resultSet.getString("name");
                 String customerEmail = resultSet.getString("email");
-                System.out.println("Customer " + customerId + " is " + customerName + " with email " + customerEmail);
+                list.add(new Customer(customerId, customerName, customerEmail));
             }
+
+            System.out.println(list.toString());
+
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -155,6 +205,5 @@ public class CustomerRepository {
         }
         System.out.println("-".repeat(50));
     }
-
 
 }
